@@ -19,4 +19,6 @@ public class Task {
     private long id;
 
     private String taskName;
+    @Enumerated
+    private TaskStatus taskStatus;
 }

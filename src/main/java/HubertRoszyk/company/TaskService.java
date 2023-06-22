@@ -10,10 +10,13 @@ public class TaskService {
     @Autowired
     private TaskRepository repository;
 
-    public List<Task> getAllTasks(){
-        return repository.findAll();
+    public List<Task> getAllTasksTodo(){
+        return repository.getTasksByStatusTodo();
     }
     public Task saveTask(Task task){
         return repository.save(task);
+    }
+    public Task getTaskById(long id){
+        return repository.findById(id).orElse(null);
     }
 }

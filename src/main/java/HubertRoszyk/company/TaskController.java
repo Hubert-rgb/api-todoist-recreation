@@ -14,10 +14,13 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
+    @CrossOrigin(origins = "*")
     @GetMapping
     public List<Task> getAllTasks(){
-        return taskService.getAllTasks();
+        return taskService.getAllTasksTodo();
     }
+
+    @CrossOrigin(origins = "*")
     @PostMapping
     public Task saveTask(@RequestBody String jsonInput){
         ObjectMapper objectMapper = new ObjectMapper();
@@ -26,10 +29,21 @@ public class TaskController {
             Task task = objectMapper.readValue(
                     jsonInput, Task.class
             );
+            task.setTaskStatus(TaskStatus.TODO);
             return taskService.saveTask(task);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @CrossOrigin(origins = "*")
+    @PutMapping("/{taskId}")
+    public Task completeTask(@PathVariable long taskId){
+        Task task = taskService.getTaskById(taskId);
+        task.setTaskStatus(TaskStatus.DONE);
+        taskService.saveTask(task);
+
+        return task;
     }
 }
 
